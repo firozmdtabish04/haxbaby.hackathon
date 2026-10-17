@@ -6,15 +6,20 @@ import { RetroWindow } from './RetroWindow';
 import { RetroButton } from './ui/RetroButton';
 import { RetroBadge } from './ui/RetroBadge';
 import { useSound } from '../hooks/useSound';
-import { Music } from 'lucide-react';
+import { Music, Sparkles, Dices, BookOpen, Filter } from 'lucide-react';
 
 export function DreamDiary() {
   const [selectedDream, setSelectedDream] = useState(null);
-  const { playClick, playLullaby, stopLullaby } = useSound();
+  const [activeCategory, setActiveCategory] = useState('All');
+  const { playClick, playChime, playLullaby, stopLullaby } = useSound();
   const [isPlayingLullaby, setIsPlayingLullaby] = useState(false);
 
-  // Take the primary 4 canonical dreams matching the mockup
-  const displayDreams = dreamEntries.slice(0, 4);
+  // Distinct categories
+  const categories = ['All', ...new Set(dreamEntries.map((d) => d.category))];
+
+  const filteredDreams = activeCategory === 'All'
+    ? dreamEntries
+    : dreamEntries.filter((d) => d.category === activeCategory);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -41,6 +46,7 @@ export function DreamDiary() {
   }, [selectedDream]);
 
   const handleOpenModal = (dream) => {
+    playClick(640);
     setSelectedDream(dream);
   };
 
@@ -60,21 +66,70 @@ export function DreamDiary() {
     }
   };
 
+  const handleRandomDream = () => {
+    playChime();
+    const randomIndex = Math.floor(Math.random() * dreamEntries.length);
+    setSelectedDream(dreamEntries[randomIndex]);
+  };
+
   return (
     <section id="dreams" className="py-10 sm:py-14 px-4 max-w-6xl mx-auto z-10 relative">
       {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
+      <div className="text-center max-w-2xl mx-auto mb-6 space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-400/20 text-pink-300 border border-pink-400/30 text-xs font-mono font-bold">
+          <BookOpen className="w-3.5 h-3.5" />
+          <span>{dreamEntries.length} Pre-Loaded Stories</span>
+        </div>
         <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-sans">
-          Dream Diary
+          Pip's Dream Diary
         </h2>
         <p className="text-sm sm:text-base text-[#cfc4f4] font-medium">
-          Little dreams, big adventures. Click a dream to read more!
+          Little dreams, big adventures. Click any dream card to read the full nocturnal story!
         </p>
       </div>
 
-      {/* 4 Cards Grid - Fully responsive: 1 col on mobile, 2 on tablet, 4 on desktop */}
+      {/* Filter Tabs & Random Story Button */}
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-8 bg-[#181136] p-2.5 sm:p-3 rounded-2xl border border-purple-400/30 shadow-md">
+        <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto">
+          {categories.map((cat) => {
+            const count = cat === 'All' ? dreamEntries.length : dreamEntries.filter((d) => d.category === cat).length;
+            const isSelected = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => {
+                  playClick(580);
+                  setActiveCategory(cat);
+                }}
+                className={`px-3 py-1.5 rounded-xl text-xs font-sans font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-pink-500 text-white shadow-sm'
+                    : 'bg-[#241a4a] text-purple-200 hover:bg-purple-900/50 hover:text-white'
+                }`}
+              >
+                <span>{cat}</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/40 font-mono">
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleRandomDream}
+          className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-sans font-bold text-xs flex items-center gap-1.5 transition-transform active:scale-95 cursor-pointer shadow-xs ml-auto"
+        >
+          <Dices className="w-4 h-4 text-purple-950" />
+          <span>🎲 Random Bedtime Story</span>
+        </button>
+      </div>
+
+      {/* Cards Grid - Fully responsive: 1 col on mobile, 2 on tablet, 4 on desktop */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {displayDreams.map((dream) => (
+        {filteredDreams.map((dream) => (
           <DreamCard key={dream.id} dream={dream} onOpen={handleOpenModal} />
         ))}
       </div>
@@ -93,7 +148,7 @@ export function DreamDiary() {
             onClick={(e) => e.stopPropagation()}
           >
             <RetroWindow
-              title={`DREAM_VIEWER // ${selectedDream.id.toUpperCase()}`}
+              title={`LOG // ${selectedDream.id.toUpperCase()}`}
               icon={selectedDream.pixelArt}
               onClose={handleCloseModal}
               statusBarText={`COORDINATES: ${selectedDream.coordinates} · BEDTIME: ${selectedDream.bedtimeRating}`}
@@ -101,72 +156,51 @@ export function DreamDiary() {
             >
               <div className="space-y-4 font-mono">
                 {/* Modal Header */}
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/10">
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl select-none" aria-hidden="true">
-                      {selectedDream.pixelArt}
+                <div className="flex items-start justify-between gap-4 pb-3 border-b border-purple-500/30">
+                  <div>
+                    <span className="text-xs text-purple-300 font-bold uppercase tracking-wider">
+                      {selectedDream.category} · {selectedDream.date}
                     </span>
-                    <div>
-                      <h3
-                        id="dream-modal-title"
-                        className="text-lg sm:text-xl font-bold text-white leading-tight font-sans"
-                      >
-                        {selectedDream.title}
-                      </h3>
-                      <p className="text-xs text-purple-300">
-                        {selectedDream.date} · {selectedDream.category}
-                      </p>
-                    </div>
+                    <h3
+                      id="dream-modal-title"
+                      className="text-lg sm:text-xl font-bold text-white font-sans mt-0.5"
+                    >
+                      {selectedDream.title}
+                    </h3>
                   </div>
-
-                  <RetroBadge variant="yellow">
-                    {selectedDream.bedtimeRating}
-                  </RetroBadge>
+                  <span className="text-3xl shrink-0 p-2 bg-[#2d1b4e] rounded-xl border border-purple-400/40">
+                    {selectedDream.pixelArt}
+                  </span>
                 </div>
 
                 {/* Full Story Content */}
-                <div className="bg-[#0b0c1b] p-4 rounded-xl border border-white/10 text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line space-y-3">
+                <div className="bg-[#120e29] p-4 rounded-xl border border-white/10 text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line">
                   {selectedDream.fullStory}
                 </div>
 
-                {/* Lore / Artifact Card */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-[#171a38] p-3 rounded-lg border border-purple-500/20">
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase tracking-wider">
-                      Starlight Coordinates:
-                    </span>
-                    <span className="text-[#38bdf8] font-bold">
-                      {selectedDream.coordinates}
+                {/* Artifact Discovered */}
+                {selectedDream.discoveredArtifact && (
+                  <div className="p-3 bg-[#1d143d] rounded-xl border border-yellow-400/30 flex items-center justify-between text-xs">
+                    <span className="text-purple-300">Artifact Brought to Wakefulness:</span>
+                    <span className="font-bold text-yellow-300 font-sans">
+                      ✨ {selectedDream.discoveredArtifact}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase tracking-wider">
-                      Discovered Artifact:
-                    </span>
-                    <span className="text-[#fde047] font-bold">
-                      ★ {selectedDream.discoveredArtifact}
-                    </span>
-                  </div>
-                </div>
+                )}
 
-                {/* Modal Action Controls */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                  <RetroButton
-                    variant="ghost"
-                    size="sm"
+                {/* Footer Controls */}
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    type="button"
                     onClick={handleToggleStoryAudio}
-                    className="text-xs"
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-400/40"
                   >
                     <Music className="w-3.5 h-3.5 text-pink-400" />
-                    {isPlayingLullaby ? 'Stop Story Melody' : 'Play Story Lullaby ♫'}
-                  </RetroButton>
+                    <span>{isPlayingLullaby ? 'Stop Story Lullaby' : 'Play Story Lullaby ♫'}</span>
+                  </button>
 
-                  <RetroButton
-                    variant="primary"
-                    size="sm"
-                    onClick={handleCloseModal}
-                  >
-                    Close Log
+                  <RetroButton variant="primary" size="sm" onClick={handleCloseModal}>
+                    Close Entry
                   </RetroButton>
                 </div>
               </div>

@@ -191,6 +191,44 @@ class SoundService {
     }
   }
 
+  playVictoryFanfare() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx) return;
+
+    try {
+      // Triumphant 8-Bit Gold Winner Fanfare (C5, E5, G5, C6, G5, C6)
+      const sequence = [
+        { freq: 523.25, time: 0.00, dur: 0.12 },
+        { freq: 659.25, time: 0.12, dur: 0.12 },
+        { freq: 783.99, time: 0.24, dur: 0.14 },
+        { freq: 1046.50, time: 0.40, dur: 0.35 },
+        { freq: 783.99, time: 0.78, dur: 0.12 },
+        { freq: 1046.50, time: 0.92, dur: 0.70 },
+      ];
+
+      sequence.forEach(({ freq, time, dur }) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const start = this.ctx.currentTime + time;
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.12, start);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(start);
+        osc.stop(start + dur);
+      });
+    } catch {
+      // Ignored
+    }
+  }
+
   playInventionHum() {
     if (this.isMuted) return;
     this.initContext();

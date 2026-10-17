@@ -22,6 +22,7 @@ export function useSound() {
   const playChime = useCallback(() => soundService.playChime(), []);
   const playStarTone = useCallback((idx) => soundService.playStarTone(idx), []);
   const playPortalUnlock = useCallback(() => soundService.playPortalUnlock(), []);
+  const playVictoryFanfare = useCallback(() => soundService.playVictoryFanfare(), []);
   const playInventionHum = useCallback(() => soundService.playInventionHum(), []);
   const playGiggle = useCallback(() => soundService.playGiggle(), []);
   const playLullaby = useCallback((onComplete) => soundService.playLullaby(onComplete), []);
@@ -46,6 +47,7 @@ export function useSound() {
     playChime,
     playStarTone,
     playPortalUnlock,
+    playVictoryFanfare,
     playInventionHum,
     playGiggle,
     playLullaby,

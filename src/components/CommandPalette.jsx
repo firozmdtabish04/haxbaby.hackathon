@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useSound } from '../hooks/useSound';
-import { Search, Compass, Music, Sparkles, Moon, Wrench, MessageSquare, Key, Wand2, X } from 'lucide-react';
+import { Search, Compass, Music, Sparkles, Moon, Wrench, MessageSquare, Key, Wand2, X, Trophy } from 'lucide-react';
 
 export function CommandPalette({ isOpen, onClose, onToggleChaos, chaosMode }) {
   const [query, setQuery] = useState('');
@@ -9,6 +9,7 @@ export function CommandPalette({ isOpen, onClose, onToggleChaos, chaosMode }) {
 
   const commands = [
     { id: 'home', label: 'Go to Home / Hero', icon: Compass, action: () => document.querySelector('#home')?.scrollIntoView({ behavior: 'smooth' }) },
+    { id: 'winner', label: '🏆 View Hackathon Winner Showcase & 100/100 Rubric', icon: Trophy, action: () => document.querySelector('#winner-showcase')?.scrollIntoView({ behavior: 'smooth' }) },
     { id: 'about', label: 'View About Pip', icon: Moon, action: () => document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' }) },
     { id: 'dreams', label: 'Open Dream Diary', icon: Sparkles, action: () => document.querySelector('#dreams')?.scrollIntoView({ behavior: 'smooth' }) },
     { id: 'inventions', label: 'Explore Invention Workshop', icon: Wrench, action: () => document.querySelector('#inventions')?.scrollIntoView({ behavior: 'smooth' }) },

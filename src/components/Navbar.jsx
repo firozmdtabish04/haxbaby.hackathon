@@ -22,6 +22,7 @@ import {
   MessageSquare,
   Gamepad2,
   Compass,
+  Trophy,
 } from 'lucide-react';
 import { useSound } from '../hooks/useSound';
 
@@ -61,6 +62,7 @@ export function Navbar({ chaosMode, onToggleChaos, onOpenCommandPalette }) {
       icon: Sparkles,
       items: [
         { label: 'Midnight Oracle', desc: 'Crystal ball fortunes', href: '#oracle', icon: Sparkles, color: 'text-amber-300' },
+        { label: '🏆 Winner Vault', desc: 'Track 1 Trophy & 100/100 Rubric', href: '#winner-showcase', icon: Trophy, color: 'text-yellow-300' },
         { label: 'Goodies Vault', desc: 'Official diplomas & icons', href: '#goodies', icon: Gift, color: 'text-emerald-400' },
         { label: '88x31 Webring Wall', desc: 'Retro pixel banners', href: '#webring', icon: Globe, color: 'text-blue-400' },
         { label: 'Public Guestbook', desc: 'Sign Pip’s visitor book', href: '#guestbook', icon: MessageSquare, color: 'text-violet-400' },
@@ -164,6 +166,16 @@ export function Navbar({ chaosMode, onToggleChaos, onOpenCommandPalette }) {
           >
             <Home className="w-3.5 h-3.5 text-purple-400" />
             <span>Home</span>
+          </a>
+
+          {/* Direct Winner Trophy Pill */}
+          <a
+            href="#winner-showcase"
+            onClick={(e) => handleLinkClick(e, '#winner-showcase')}
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-sans font-black bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 rounded-lg shadow-xs transition-transform active:scale-95 cursor-pointer"
+          >
+            <Trophy className="w-3.5 h-3.5 text-slate-950" />
+            <span>Winner 🏆</span>
           </a>
 
           {/* Categorized Dropdowns */}
@@ -302,15 +314,25 @@ export function Navbar({ chaosMode, onToggleChaos, onOpenCommandPalette }) {
       {/* Mobile Drawer Menu organized into categorized dropdown/accordion sections */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#181233] border-b-2 border-purple-400/50 px-4 py-4 space-y-4 max-h-[80vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150">
-          {/* Quick Home link */}
-          <a
-            href="#home"
-            onClick={(e) => handleLinkClick(e, '#home')}
-            className="flex items-center gap-2 p-2.5 bg-[#251d4d] border border-purple-400/30 rounded-xl text-xs font-sans font-bold text-white hover:bg-purple-900/60"
-          >
-            <Home className="w-4 h-4 text-purple-400" />
-            <span>Home / Lab HQ</span>
-          </a>
+          {/* Quick Home & Winner links */}
+          <div className="grid grid-cols-2 gap-2">
+            <a
+              href="#home"
+              onClick={(e) => handleLinkClick(e, '#home')}
+              className="flex items-center justify-center gap-1.5 p-2.5 bg-[#251d4d] border border-purple-400/30 rounded-xl text-xs font-sans font-bold text-white hover:bg-purple-900/60"
+            >
+              <Home className="w-4 h-4 text-purple-400" />
+              <span>Home HQ</span>
+            </a>
+            <a
+              href="#winner-showcase"
+              onClick={(e) => handleLinkClick(e, '#winner-showcase')}
+              className="flex items-center justify-center gap-1.5 p-2.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-sans font-bold rounded-xl text-xs shadow-xs"
+            >
+              <Trophy className="w-4 h-4 text-slate-950" />
+              <span>Winner Vault 🏆</span>
+            </a>
+          </div>
 
           {/* Categorized Groups */}
           {navGroups.map((group) => {

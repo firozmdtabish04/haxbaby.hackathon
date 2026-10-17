@@ -18,6 +18,7 @@ import { Footer } from './components/Footer';
 import { StarField } from './components/StarField';
 import { SparkleTrail } from './components/SparkleTrail';
 import { CommandPalette } from './components/CommandPalette';
+import { HackathonWinnerShowcase } from './components/HackathonWinnerShowcase';
 
 export function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -100,6 +101,7 @@ export function App() {
       <main className="flex-1 space-y-4">
         {/* Core Sections */}
         <Hero />
+        <HackathonWinnerShowcase />
         <AboutPip />
         <DreamDiary />
         <InventionWorkshop />
