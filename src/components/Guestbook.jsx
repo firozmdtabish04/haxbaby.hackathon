@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useSound } from '../hooks/useSound';
 import { validateGuestbookEntry } from '../utils/validation';
-import { CheckCircle2, AlertCircle, Trash2, Heart, Star } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Trash2, Star } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const INITIAL_GUESTBOOK_ENTRIES = [

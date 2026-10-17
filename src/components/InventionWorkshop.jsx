@@ -3,7 +3,7 @@ import { standardInventions, generatorTables } from '../data/inventions';
 import { RetroWindow } from './RetroWindow';
 import { RetroButton } from './ui/RetroButton';
 import { useSound } from '../hooks/useSound';
-import { Zap, RefreshCw, X, Sparkles, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Zap, AlertTriangle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export function InventionWorkshop() {

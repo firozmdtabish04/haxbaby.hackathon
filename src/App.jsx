@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Loader } from './components/Loader';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutPip } from './components/AboutPip';
@@ -11,6 +12,7 @@ import { StarField } from './components/StarField';
 import { SparkleTrail } from './components/SparkleTrail';
 
 export function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [chaosMode, setChaosMode] = useState(false);
 
   // Sync chaos mode class on document body
@@ -28,6 +30,9 @@ export function App() {
 
   return (
     <div className="relative min-h-screen text-slate-100 flex flex-col selection:bg-pink-500 selection:text-white">
+      {/* Whimsical Retro Preloader with Designer/Developer Credits */}
+      {isLoading && <Loader onFinish={() => setIsLoading(false)} />}
+
       {/* Side Quest: Stardust cursor & touch sparkle trail */}
       <SparkleTrail />
 

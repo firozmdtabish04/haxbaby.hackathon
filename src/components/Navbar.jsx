@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Star, Volume2, VolumeX, Sparkles, Wand2 } from 'lucide-react';
+import { Menu, X, Star, Volume2, VolumeX } from 'lucide-react';
 import { useSound } from '../hooks/useSound';
 
 export function Navbar({ chaosMode, onToggleChaos }) {

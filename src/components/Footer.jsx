@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowUp, Heart, Moon, Star, Sparkles } from 'lucide-react';
+import { ArrowUp, Heart, Moon, Sparkles } from 'lucide-react';
 import { useSound } from '../hooks/useSound';
 
 export function Footer() {
@@ -109,10 +109,10 @@ export function Footer() {
         </div>
 
         {/* Vintage Badges Banner */}
-        <div className="flex-wrap pt-6 gap-3 border-t border-white/10 justify-between text-xs text-slate-500 flex items-center">
+        <div className="flex-wrap pt-6 gap-3 border-t border-purple-400/20 justify-between text-xs text-slate-400 flex items-center">
           <div className="flex-wrap gap-2 flex items-center">
-            <span className="px-2 py-0.5 bg-[#121327] border border-white/10 rounded text-[10px] text-purple-300">
-              ★ 100% PURE HTML/REACT
+            <span className="px-2.5 py-1 bg-[#121327] border border-pink-400/30 rounded text-[11px] text-[#ff86b6] font-bold">
+              ★ Designed &amp; Developed by Tabish Firoz
             </span>
             <span className="px-2 py-0.5 bg-[#121327] border border-white/10 rounded text-[10px] text-pink-300">
               ★ NO COOKIES · ONLY STARS
@@ -122,8 +122,8 @@ export function Footer() {
             </span>
           </div>
 
-          <div className="text-[11px] text-slate-400">
-            © 2026 Pip's Dream Lab. All rights reserved. Crafted with <Heart className="inline w-3 h-3 text-pink-400 fill-pink-400" /> and <Sparkles className="inline w-3 h-3 text-yellow-300" />.
+          <div className="text-[11px] text-[#c4b5fd]">
+            © 2026 Pip's Dream Lab · haX.baby Track 1 · Crafted with <Heart className="inline w-3 h-3 text-pink-400 fill-pink-400" /> by <strong>Tabish Firoz</strong>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 # Pip's Dream Lab — The Little Internet of Big Dreams 🌙✨
-**Official Submission for haX.baby: Baby's First Website Hackathon (Track 1: Pip the Skull Baby)**
-
+**Official Submission for haX.baby: Baby's First Website Hackathon (Track 1: Pip the Skull Baby)**  
+**Designed & Developed by:** Tabish Firoz  
 Live Demo URL: [https://pipsdreamlab.vercel.app/](https://pipsdreamlab.vercel.app/)
 
 ---

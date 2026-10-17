@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { RetroWindow } from './RetroWindow';
-import { RetroButton } from './ui/RetroButton';
 import { useSound } from '../hooks/useSound';
 import { Key, RotateCcw, HelpCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';

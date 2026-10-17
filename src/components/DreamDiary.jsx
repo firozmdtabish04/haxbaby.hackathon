@@ -5,7 +5,7 @@ import { RetroWindow } from './RetroWindow';
 import { RetroButton } from './ui/RetroButton';
 import { RetroBadge } from './ui/RetroBadge';
 import { useSound } from '../hooks/useSound';
-import { BookOpen, Music, X } from 'lucide-react';
+import { Music } from 'lucide-react';
 
 export function DreamDiary() {
   const [selectedDream, setSelectedDream] = useState(null);

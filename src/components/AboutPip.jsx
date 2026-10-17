@@ -1,6 +1,6 @@
 import React from 'react';
 import { RetroWindow } from './RetroWindow';
-import { Star, Heart, Terminal, Sparkles, Moon, Wrench } from 'lucide-react';
+import { Terminal } from 'lucide-react';
 
 export function AboutPip() {
   return (

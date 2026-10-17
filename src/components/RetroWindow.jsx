@@ -10,8 +10,8 @@ export function RetroWindow({
   onMinimize,
   statusBarText = 'STATUS: 100% COZY · READY',
   className = '',
-  headerBg = 'bg-gradient-to-r from-[#1e1b4b] via-[#312e81] to-[#4338ca]',
-  borderColor = 'border-[#4c1d95]',
+  headerBg = 'bg-gradient-to-r from-[#2a1d4a] via-[#35255e] to-[#251842]',
+  borderColor = 'border-[#584180]',
 }) {
   const { playClick } = useSound();
 
@@ -29,14 +29,21 @@ export function RetroWindow({
 
   return (
     <div
-      className={`relative bg-[#111328]/95 backdrop-blur-sm border-2 ${borderColor} rounded-sm shadow-[5px_5px_0_0_#060814] text-slate-100 font-mono overflow-hidden transition-all duration-150 ${className}`}
+      className={`relative bg-[#1c1539]/95 backdrop-blur-md border-2 ${borderColor} rounded-2xl shadow-[0_12px_32px_rgba(10,5,25,0.5)] text-slate-100 font-mono overflow-hidden transition-all duration-150 ${className}`}
     >
-      {/* Title Bar */}
+      {/* Title Bar with 3 cute pastel window dots */}
       <div
-        className={`flex items-center justify-between px-3 py-1.5 border-b-2 ${borderColor} select-none ${headerBg}`}
+        className={`flex items-center justify-between px-4 py-2 border-b-2 ${borderColor} select-none ${headerBg}`}
       >
-        <div className="flex items-center gap-2 truncate">
-          <span className="text-sm select-none" aria-hidden="true">
+        <div className="flex items-center gap-2.5 truncate">
+          {/* Mac/Early-Web 3 colored dots */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-3 h-3 rounded-full bg-[#fca5a5] border border-[#f87171]/50 shadow-xs inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#fef08a] border border-[#facc15]/50 shadow-xs inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#86efac] border border-[#4ade80]/50 shadow-xs inline-block" />
+          </div>
+
+          <span className="text-sm select-none ml-1" aria-hidden="true">
             {icon}
           </span>
           <h3 className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white truncate font-mono">
@@ -51,7 +58,7 @@ export function RetroWindow({
               type="button"
               onClick={handleMin}
               aria-label="Minimize window"
-              className="w-5 h-5 flex items-center justify-center bg-[#252849] hover:bg-[#343864] active:bg-[#1a1c35] border border-white/30 text-xs text-white shadow-[1px_1px_0_0_#000] focus:outline-none"
+              className="w-5 h-5 flex items-center justify-center bg-[#2f2250] hover:bg-[#3d2e66] active:bg-[#1f1538] border border-white/20 text-xs text-white rounded shadow-xs focus:outline-none"
             >
               <Minus className="w-3 h-3" />
             </button>
@@ -60,7 +67,7 @@ export function RetroWindow({
           <button
             type="button"
             aria-label="Maximize window"
-            className="w-5 h-5 flex items-center justify-center bg-[#252849] hover:bg-[#343864] active:bg-[#1a1c35] border border-white/30 text-xs text-white shadow-[1px_1px_0_0_#000] focus:outline-none"
+            className="w-5 h-5 flex items-center justify-center bg-[#2f2250] hover:bg-[#3d2e66] active:bg-[#1f1538] border border-white/20 text-xs text-white rounded shadow-xs focus:outline-none"
           >
             <Square className="w-2.5 h-2.5" />
           </button>
@@ -70,7 +77,7 @@ export function RetroWindow({
               type="button"
               onClick={handleClose}
               aria-label="Close window"
-              className="w-5 h-5 flex items-center justify-center bg-[#e11d48] hover:bg-[#f43f5e] active:bg-[#9f1239] border border-white/30 text-xs text-white shadow-[1px_1px_0_0_#000] focus:outline-none"
+              className="w-5 h-5 flex items-center justify-center bg-[#f43f5e] hover:bg-[#fb7185] active:bg-[#e11d48] border border-white/30 text-xs text-white rounded shadow-xs focus:outline-none"
             >
               <X className="w-3 h-3" />
             </button>
@@ -79,16 +86,17 @@ export function RetroWindow({
       </div>
 
       {/* Main Content Area */}
-      <div className="p-4 sm:p-5 text-sm">{children}</div>
+      <div className="p-4 sm:p-6 text-sm">{children}</div>
 
       {/* Bottom Status Bar */}
       {statusBarText && (
-        <div className="px-3 py-1 bg-[#0a0c1a] border-t border-white/10 text-[10px] sm:text-xs text-slate-400 flex items-center justify-between select-none">
+        <div className="px-4 py-1.5 bg-[#120d29] border-t border-purple-500/20 text-[10px] sm:text-xs text-purple-300/80 flex items-center justify-between select-none">
           <span className="truncate">{statusBarText}</span>
-          <span className="text-purple-400 shrink-0 ml-2">PIP-OS v1.0</span>
+          <span className="text-[#f472b6] shrink-0 ml-2 font-bold">PIP-OS v1.0</span>
         </div>
       )}
     </div>
   );
 }
+
 export default RetroWindow;

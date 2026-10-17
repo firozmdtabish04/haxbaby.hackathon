@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { RetroBadge } from './ui/RetroBadge';
 import { VisitorCounter } from './VisitorCounter';
 import { useSound } from '../hooks/useSound';
 import { Heart, Sparkles, ArrowRight, Moon, Star } from 'lucide-react';
