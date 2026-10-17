@@ -65,9 +65,46 @@ No corporate design systems. No sterile dashboards. Just handcrafted pixel aesth
 - Progressive constellation line tracing.
 - Solving the sequence unlocks the **Secret Sanctuary** with celebratory confetti, a personal letter from Pip, and secret passcode reward!
 
-### 8. 👣 Atmospheric Polish & Bonus Features
+### 8. 🎹 Pip's 8-Bit Celestial Synth (`CelestialSynth.jsx`)
+- Interactive playable musical keyboard with notes from $C_5$ to $C_6$ ($523.25\text{Hz}$ to $1046.5\text{Hz}$).
+- Supports clicking chime keys or pressing real keyboard keys (`A S D F G H J K`).
+- Preset auto-play lullabies: *Twinkle Starlight*, *Brahms Lullaby*, and *Cosmic Chime*.
+
+### 9. 💌 Dream Weaver & Postcard Studio (`DreamWeaver.jsx`)
+- Interactive procedural generator allowing visitors to combine settings, companions, bedtime vibes, and wishes.
+- Real-time digital dream postcard generation with one-click clipboard copying.
+- Instant "Randomize Recipe 🎲" feature with confetti bursts.
+
+### 10. 🌙 Nocturnal Sleep Aid & Ambient Soundscape (`AmbientSleepStation.jsx`)
+- Procedural **Cosmic Rain** generated with filtered pink noise buffers.
+- **432Hz Deep Space Drone** synthesized with twin harmonic oscillators.
+- Countdown Sleep Timer (5 min, 15 min, 30 min) for nighttime relaxation.
+
+### 11. 🔍 Quick Command Palette HUD (`CommandPalette.jsx`)
+- Global keyboard shortcut (`Ctrl + K` or `Cmd + K`) or navigation search button.
+- Instant fuzzy jump to any section, audio toggling, and chaos mode activation.
+
+### 12. 🧸 Virtual Pet Tamagotchi Bedtime Care (`PipPet.jsx`)
+- Interactive virtual companion with live `Marshmallow Hunger`, `Blanket Coziness`, and `Sleep Readiness` meters.
+- Interactive controls to feed vanilla marshmallows, tuck Pip into cloud blankets, or read bedtime stories with live speech bubble reactions.
+
+### 13. 🔮 Midnight Dream Oracle & Crystal Ball (`DreamOracle.jsx`)
+- Nostalgic crystal ball prediction machine where visitors can type questions and consult the stars.
+- Returns randomized celestial fortunes with synthesized chimes and confetti bursts.
+
+### 14. 🎁 Digital Goodies Vault & Diploma (`GoodiesVault.jsx`)
+- Generates an official customized SVG *Junior Dream Engineer Certificate* signed by Pip and Tabish Firoz.
+- One-click direct downloads for official high-resolution, watermark-free renders and desktop wallpapers.
+
+### 15. 🌐 88x31 Button Wall & Starlight Webring (`WebringWall.jsx`)
+- Authentic collection of classic 88x31 pixel banners (*Netscape Now*, *No Cookies Only Stars*, *800x600*, *Tabish Firoz Dev*).
+- Starlight Webring hub with *Previous*, *Random*, and *Next* site navigators.
+- One-click button embed snippet copy for visitors to link Pip on their personal homepages.
+
+### 16. 👣 Atmospheric Polish & Bonus Features
+- **Retro Boot Preloader (`Loader.jsx`)**: Whimsical booting sequence with prominent *"Designed & Developed by Tabish Firoz"* attribution.
 - **Stardust Cursor Trail & Touch Sparkles (`SparkleTrail.jsx`)**: Floating stardust particles with throttle and `prefers-reduced-motion` compliance.
-- **Web Audio API Synth (`soundService.js`)**: 100% code-generated retro tones (clicks, star chimes, mechanical hums, giggles, lullabies) with zero copyrighted audio files.
+- **Web Audio API Synth (`soundService.js`)**: 100% code-generated retro tones with zero copyrighted audio files.
 - **Retro Visitor Counter (`VisitorCounter.jsx`)**: Rolling flip-odometer with local visit tracking.
 - **Responsive Chaos Mode**: Transforms the entire site into a vibrant retro-neon cyber palette.
 - **Back to Top & Sleepy Moon Surprise (`Footer.jsx`)**: Night Owl easter egg badge.

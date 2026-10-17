@@ -86,7 +86,7 @@ export function RetroWindow({
       </div>
 
       {/* Main Content Area */}
-      <div className="p-4 sm:p-6 text-sm">{children}</div>
+      <div className="p-4 sm:p-6 text-sm overflow-y-auto flex-1 overscroll-contain">{children}</div>
 
       {/* Bottom Status Bar */}
       {statusBarText && (

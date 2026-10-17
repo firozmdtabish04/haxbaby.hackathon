@@ -44,6 +44,18 @@ export function Loader({ onFinish }) {
     return () => clearInterval(interval);
   }, [onFinish]);
 
+  // Prevent background scroll while loader is visible
+  useEffect(() => {
+    if (!isFading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isFading]);
+
   const handleSkip = () => {
     setIsFading(true);
     setTimeout(() => {

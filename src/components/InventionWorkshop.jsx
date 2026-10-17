@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { standardInventions, generatorTables } from '../data/inventions';
 import { RetroWindow } from './RetroWindow';
 import { RetroButton } from './ui/RetroButton';
@@ -11,6 +12,29 @@ export function InventionWorkshop() {
   const [selectedInvention, setSelectedInvention] = useState(null);
   const [interactiveActive, setInteractiveActive] = useState({});
   const [generatedGizmo, setGeneratedGizmo] = useState(null);
+
+  // Close modal on Escape key
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && selectedInvention) {
+        setSelectedInvention(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedInvention]);
+
+  // Lock body scroll when modal is open so popup window never hides or jumps on scroll
+  React.useEffect(() => {
+    if (selectedInvention) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedInvention]);
 
   const handleOpenDetails = (inv) => {
     playClick(580);
@@ -158,15 +182,15 @@ export function InventionWorkshop() {
       )}
 
       {/* Invention Details Modal */}
-      {selectedInvention && (
+      {selectedInvention && typeof document !== 'undefined' && createPortal(
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150"
+          className="fixed inset-0 z-[9999] overflow-y-auto bg-black/85 backdrop-blur-md p-3 sm:p-6 flex min-h-screen items-center justify-center animate-in fade-in duration-200"
           onClick={() => setSelectedInvention(null)}
         >
           <div
-            className="w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-lg my-auto animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             <RetroWindow
@@ -174,6 +198,7 @@ export function InventionWorkshop() {
               icon="⚙️"
               onClose={() => setSelectedInvention(null)}
               statusBarText={`SERIAL: ${selectedInvention.codename} · CALIBRATION: OK`}
+              className="flex flex-col max-h-[85vh] sm:max-h-[90vh]"
             >
               <div className="space-y-4 font-mono text-xs">
                 <div className="flex items-center gap-4">
@@ -210,7 +235,7 @@ export function InventionWorkshop() {
                   <button
                     type="button"
                     onClick={() => handleToggleMechanism(selectedInvention)}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-bold flex items-center gap-1.5"
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-bold flex items-center gap-1.5 cursor-pointer"
                   >
                     <Zap className="w-3.5 h-3.5" />
                     {interactiveActive[selectedInvention.id] ? 'Active (Tap to Stop)' : 'Engage Mechanism'}
@@ -227,7 +252,8 @@ export function InventionWorkshop() {
               </div>
             </RetroWindow>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );

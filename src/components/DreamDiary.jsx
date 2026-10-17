@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { dreamEntries } from '../data/dreams';
 import { DreamCard } from './DreamCard';
 import { RetroWindow } from './RetroWindow';
@@ -26,6 +27,18 @@ export function DreamDiary() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedDream, stopLullaby]);
+
+  // Lock body scroll when modal is open so background never scrolls or hides popup
+  useEffect(() => {
+    if (selectedDream) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedDream]);
 
   const handleOpenModal = (dream) => {
     setSelectedDream(dream);
@@ -67,16 +80,16 @@ export function DreamDiary() {
       </div>
 
       {/* Full Dream Entry Modal */}
-      {selectedDream && (
+      {selectedDream && typeof document !== 'undefined' && createPortal(
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="dream-modal-title"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150"
+          className="fixed inset-0 z-[9999] overflow-y-auto bg-black/85 backdrop-blur-md p-3 sm:p-6 flex min-h-screen items-center justify-center animate-in fade-in duration-200"
           onClick={handleCloseModal}
         >
           <div
-            className="w-full max-w-xl max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-xl my-auto animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             <RetroWindow
@@ -84,6 +97,7 @@ export function DreamDiary() {
               icon={selectedDream.pixelArt}
               onClose={handleCloseModal}
               statusBarText={`COORDINATES: ${selectedDream.coordinates} · BEDTIME: ${selectedDream.bedtimeRating}`}
+              className="flex flex-col max-h-[85vh] sm:max-h-[90vh]"
             >
               <div className="space-y-4 font-mono">
                 {/* Modal Header */}
@@ -158,7 +172,8 @@ export function DreamDiary() {
               </div>
             </RetroWindow>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );

@@ -1,15 +1,17 @@
-// Web Audio API Retro Sound Service
-// Generates whimsical retro 8-bit & chime sounds without any external audio files.
-// Meets requirement: Sound is OFF by default, no audio plays automatically.
+// Web Audio API Retro Sound Service & Advanced Procedural Sound Engine
+// Generates whimsical retro 8-bit, chime sounds, and procedural ambient sleep soundscapes.
+// Pure Web Audio API: Zero external audio files required.
 
 class SoundService {
   constructor() {
     this.ctx = null;
-    // Default to true (muted) as required: sound off by default
     const saved = typeof window !== 'undefined' ? localStorage.getItem('pip_sound_muted') : null;
     this.isMuted = saved !== null ? saved === 'true' : true;
     this.listeners = new Set();
     this.lullabyTimer = null;
+    this.ambientSource = null;
+    this.ambientGain = null;
+    this.currentAmbientType = null;
   }
 
   initContext() {
@@ -38,6 +40,7 @@ class SoundService {
       this.playChime();
     } else {
       this.stopLullaby();
+      this.stopAmbientNoise();
     }
     this.notify();
   }
@@ -80,6 +83,30 @@ class SoundService {
     }
   }
 
+  playTone(freq = 440, duration = 0.5, type = 'sine') {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx) return;
+
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+      // Bell-like harmonic envelope
+      gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch {
+      // Ignored
+    }
+  }
+
   playChime() {
     if (this.isMuted) return;
     this.initContext();
@@ -114,8 +141,7 @@ class SoundService {
     this.initContext();
     if (!this.ctx) return;
 
-    // Harmonic pentatonic constellation tones: C5, D5, E5, G5, A5, C6
-    const pentatonic = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.5];
+    const pentatonic = [523.25, 659.25, 783.99, 1046.5, 1174.66];
     const freq = pentatonic[index % pentatonic.length];
 
     try {
@@ -124,13 +150,13 @@ class SoundService {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
-      gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.55);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
       osc.start();
-      osc.stop(this.ctx.currentTime + 0.5);
+      osc.stop(this.ctx.currentTime + 0.55);
     } catch {
       // Ignored
     }
@@ -142,7 +168,6 @@ class SoundService {
     if (!this.ctx) return;
 
     try {
-      // Celebratory retro fanfare arpeggio
       const notes = [440, 554.37, 659.25, 880, 1108.73, 1318.51, 1760];
       notes.forEach((freq, idx) => {
         if (!this.ctx) return;
@@ -172,7 +197,6 @@ class SoundService {
     if (!this.ctx) return;
 
     try {
-      // Whimsical mechanical whirr / frequency rise
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = 'sawtooth';
@@ -263,6 +287,88 @@ class SoundService {
       clearTimeout(this.lullabyTimer);
       this.lullabyTimer = null;
     }
+  }
+
+  // --- Procedural Ambient Sleep Sound Generator ---
+  startAmbientNoise(type = 'rain') {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx) return;
+    this.stopAmbientNoise();
+
+    try {
+      this.currentAmbientType = type;
+      if (type === 'rain') {
+        // Synthesize soft pink noise rain
+        const bufferSize = this.ctx.sampleRate * 2;
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99886 * b0 + white * 0.0555179;
+          b1 = 0.99332 * b1 + white * 0.0750759;
+          b2 = 0.96900 * b2 + white * 0.1538520;
+          output[i] = (b0 + b1 + b2) * 0.11;
+        }
+
+        const whiteNoise = this.ctx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(800, this.ctx.currentTime);
+
+        this.ambientGain = this.ctx.createGain();
+        this.ambientGain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+
+        whiteNoise.connect(filter);
+        filter.connect(this.ambientGain);
+        this.ambientGain.connect(this.ctx.destination);
+        whiteNoise.start();
+        this.ambientSource = whiteNoise;
+      } else if (type === 'drone') {
+        // 432Hz deep space harmonic drone
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(108, this.ctx.currentTime);
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(216, this.ctx.currentTime);
+
+        this.ambientGain = this.ctx.createGain();
+        this.ambientGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+
+        osc1.connect(this.ambientGain);
+        osc2.connect(this.ambientGain);
+        this.ambientGain.connect(this.ctx.destination);
+        osc1.start();
+        osc2.start();
+        this.ambientSource = {
+          stop: () => {
+            osc1.stop();
+            osc2.stop();
+          },
+        };
+      }
+    } catch {
+      // Ignored
+    }
+  }
+
+  stopAmbientNoise() {
+    if (this.ambientSource) {
+      try {
+        this.ambientSource.stop();
+      } catch {}
+      this.ambientSource = null;
+    }
+    this.currentAmbientType = null;
+  }
+
+  getCurrentAmbientType() {
+    return this.currentAmbientType;
   }
 }
 

@@ -3,10 +3,12 @@ import { soundService } from '../services/soundService';
 
 export function useSound() {
   const [isMuted, setIsMuted] = useState(() => soundService.getMuted());
+  const [activeAmbient, setActiveAmbient] = useState(() => soundService.getCurrentAmbientType());
 
   useEffect(() => {
     const unsubscribe = soundService.subscribe((muted) => {
       setIsMuted(muted);
+      setActiveAmbient(soundService.getCurrentAmbientType());
     });
     return unsubscribe;
   }, []);
@@ -16,6 +18,7 @@ export function useSound() {
   }, []);
 
   const playClick = useCallback((freq) => soundService.playClick(freq), []);
+  const playTone = useCallback((freq, duration, type) => soundService.playTone(freq, duration, type), []);
   const playChime = useCallback(() => soundService.playChime(), []);
   const playStarTone = useCallback((idx) => soundService.playStarTone(idx), []);
   const playPortalUnlock = useCallback(() => soundService.playPortalUnlock(), []);
@@ -24,10 +27,22 @@ export function useSound() {
   const playLullaby = useCallback((onComplete) => soundService.playLullaby(onComplete), []);
   const stopLullaby = useCallback(() => soundService.stopLullaby(), []);
 
+  const startAmbientNoise = useCallback((type) => {
+    soundService.startAmbientNoise(type);
+    setActiveAmbient(type);
+  }, []);
+
+  const stopAmbientNoise = useCallback(() => {
+    soundService.stopAmbientNoise();
+    setActiveAmbient(null);
+  }, []);
+
   return {
     isMuted,
+    activeAmbient,
     toggleMute,
     playClick,
+    playTone,
     playChime,
     playStarTone,
     playPortalUnlock,
@@ -35,5 +50,7 @@ export function useSound() {
     playGiggle,
     playLullaby,
     stopLullaby,
+    startAmbientNoise,
+    stopAmbientNoise,
   };
 }
